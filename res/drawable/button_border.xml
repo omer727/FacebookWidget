@@ -15,19 +15,10 @@
     limitations under the License.
 -->
 
-<resources>
-
-    <string name="hello">Facebook Widget</string>
-    <string name="app_name">Facebook Widget</string>
-    <string name="app_id">441969622545187</string>
-    <string name="request">Request</string>
-    <string name="instructions">Login to create a link to fetch account data</string>
-    <string name="logout">Log out</string>
-    <string name="login_failed_dialog_title">Login failed</string>
-    <string name="ok_button">OK</string>
-    <string name="get_started">To get started, log in using Facebook</string>
-    <string name="settings">Settings</string>
-    
-    
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <solid android:color="#FFF" />
+    <corners android:radius="10dp" />
+    <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+    <stroke android:width="1px" android:color="#444" />
+</shape>
