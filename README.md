@@ -1,4 +1,4 @@
 FacebookWidget
 ==============
 
-A widget which display facebook statuses
+An android widget which display the user facebook stream
