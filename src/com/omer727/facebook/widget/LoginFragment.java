@@ -8,8 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.facebook.samples.graphapi.R;
+import com.omer727.facebook.widget.R;
 import com.facebook.widget.LoginButton;
+
 
 public class LoginFragment extends Fragment {
 

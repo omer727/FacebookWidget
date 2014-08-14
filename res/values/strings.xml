@@ -19,7 +19,8 @@
 
     <string name="hello">Facebook Widget</string>
     <string name="app_name">Facebook Widget</string>
-    <string name="app_id">441969622545187</string>
+    <!-- <string name="app_id">1453550824920531</string> -->
+    <string name="app_id">441969622545187</string>    
     <string name="request">Request</string>
     <string name="instructions">Login to create a link to fetch account data</string>
     <string name="logout">Log out</string>

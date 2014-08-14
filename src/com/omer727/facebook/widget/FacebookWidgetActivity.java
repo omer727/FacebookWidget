@@ -28,11 +28,11 @@ import android.view.MenuItem;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.samples.graphapi.R;
+
 
 public class FacebookWidgetActivity extends FragmentActivity {
 	static final String APP_ID = "441969622545187";
-	static final String PENDING_REQUEST_BUNDLE_KEY = "com.facebook.samples.graphapi:PendingRequest";
+	static final String PENDING_REQUEST_BUNDLE_KEY = "com.omer727.facebook.widget:PendingRequest";
 
 	private static final int SPLASH = 0;
 	private static final int SELECTION = 1;

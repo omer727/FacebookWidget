@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,8 +29,9 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-import com.facebook.samples.graphapi.R;
+import com.omer727.facebook.widget.R;
 import com.facebook.widget.ProfilePictureView;
+
 
 public class StreamFragment extends Fragment {
 
