@@ -140,7 +140,8 @@ public class StreamFragment extends Fragment {
 								status.setContent(statusJson.optString("message"));								
 								status.setPicture(statusJson.optString("picture",""));
 								status.setLogo("https://graph.facebook.com/"+from.optString("id","")+"/picture?redirect=true");
-								
+								status.setTitle(statusJson.optString("name"));
+								status.setDescription(statusJson.optString("description"));
 								model.add(status);
 							}
 							
@@ -180,6 +181,8 @@ public class StreamFragment extends Fragment {
 			
 			((TextView)row.findViewById(R.id.author)).setText(s.getAuthor());
 			((TextView)row.findViewById(R.id.content)).setText(s.getContent());
+			((TextView)row.findViewById(R.id.title)).setText(s.getTitle());
+			((TextView)row.findViewById(R.id.description)).setText(s.getDescription());
 			new ImageLoadTask(s.getLogo(),(ImageView)row.findViewById(R.id.logo)).execute(null,null);
 			new ImageLoadTask(s.getPicture(),(ImageView)row.findViewById(R.id.photo)).execute(null,null);
 			
@@ -199,7 +202,7 @@ public class StreamFragment extends Fragment {
 			}
 		};
 		Bundle bundle = new Bundle();
-		bundle.putString("fields", "home.fields(message,from,picture,comments.fields(message,like_count),likes.fields(name))");
+		bundle.putString("fields", "home.fields(message,from,picture,name,description,comments.fields(message,like_count),likes.fields(name))");
 		return new Request(session, "me", bundle, null, wrapper);
 	}
 
