@@ -31,7 +31,7 @@ import com.facebook.UiLifecycleHelper;
 
 
 public class FacebookWidgetActivity extends FragmentActivity {
-	static final String APP_ID = "441969622545187";
+	//static String APP_ID;
 	static final String PENDING_REQUEST_BUNDLE_KEY = "com.omer727.facebook.widget:PendingRequest";
 
 	private static final int SPLASH = 0;
@@ -47,6 +47,8 @@ public class FacebookWidgetActivity extends FragmentActivity {
 	private boolean isResumed = false;
 
 	private UiLifecycleHelper uiHelper;
+	
+	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state,
@@ -183,6 +185,7 @@ public class FacebookWidgetActivity extends FragmentActivity {
 		} else {
 			// otherwise present the splash screen
 			// and ask the person to login.
+			String APP_ID = getResources().getString(R.string.app_id);
 			Session activeSession = new Session.Builder(this).setApplicationId(APP_ID).build();
 			Session.setActiveSession(activeSession);
 			showFragment(SPLASH, false);

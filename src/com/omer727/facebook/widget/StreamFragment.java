@@ -1,16 +1,15 @@
 package com.omer727.facebook.widget;
 
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,7 +29,6 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-import com.omer727.facebook.widget.R;
 import com.facebook.widget.ProfilePictureView;
 
 
@@ -40,7 +39,9 @@ public class StreamFragment extends Fragment {
 	private UiLifecycleHelper uiHelper;
 	View view;
 	private static final int REAUTH_ACTIVITY_CODE = 101;
-
+	private List<Status> model;
+	
+	
 	DateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 	SimpleDateFormat outputDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
@@ -53,6 +54,11 @@ public class StreamFragment extends Fragment {
 		uiHelper.onCreate(savedInstanceState);
 		
 		
+	}
+	
+
+	public List<Status> getModel() {
+		return model;
 	}
 
 
@@ -102,6 +108,8 @@ public class StreamFragment extends Fragment {
 		// Make an API call to get user data and define a 
 		// new callback to handle the response.
 		Request request = MyRequest(session, new Request.GraphUserCallback() {
+			
+
 			@Override
 			public void onCompleted(GraphUser user, Response response) {
 				// If the response is successful
@@ -115,29 +123,33 @@ public class StreamFragment extends Fragment {
 							String x= "";//((JSONObject)user.getProperty("home")).getJSONArray("data").getJSONObject(0).getString("message");
 							JSONArray statuses = ((JSONObject)user.getProperty("home")).getJSONArray("data");
 
-							List<String> list = new ArrayList<String>();
+							model = new ArrayList<Status>();
 							
 							for (int i=0; i < statuses.length() ; i++){
 
-								JSONObject status = statuses.getJSONObject(i);
-								JSONObject from = null;
-								try{
-								from = status.getJSONObject("from");
-								}catch(Exception e){
-									e.printStackTrace();
-								}
-								Date creationDate = inputDateFormat.parse(status.getString("created_time"));
+								Status status = new Status();
+								
+								JSONObject statusJson = statuses.getJSONObject(i);
+								JSONObject from = statusJson.getJSONObject("from");
+
+								Date creationDate = inputDateFormat.parse(statusJson.getString("created_time"));
 								
 								String creationDateStr = outputDateFormat.format(creationDate);
-								list.add(from.optString("name") + "\n" + status.optString("message","")+"\n" + creationDateStr);
+								
+								status.setAuthor(from.optString("name",""));
+								status.setContent(statusJson.optString("message"));								
+								status.setPicture(statusJson.optString("picture",""));
+								status.setLogo("https://graph.facebook.com/"+from.optString("id","")+"/picture?redirect=true");
+								
+								model.add(status);
 							}
 							
-							StableArrayAdapter adapter = new StableArrayAdapter(getActivity(),android.R.layout.simple_list_item_1, list);
+							ArrayAdapter adapter = new StatusAdapter();
 						    ListView listview = (ListView) view.findViewById(R.id.listview);
 						    listview.setAdapter(adapter);
 
 							    
-							//userNameView.setText(+ x);
+							
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -153,7 +165,27 @@ public class StreamFragment extends Fragment {
 		request.executeAsync();
 	}
 
-	
+	private class StatusAdapter extends ArrayAdapter<Status>{
+		StatusAdapter(){
+			super(StreamFragment.this.getActivity(),R.layout.row, getModel());						
+		}
+		
+		public View getView(int position, View convertView, ViewGroup parent){
+			View row = convertView;
+			if (row==null){
+				LayoutInflater inflater = getLayoutInflater(null);
+				row = inflater.inflate(R.layout.row, null);
+			}
+			Status s = model.get(position);
+			
+			((TextView)row.findViewById(R.id.author)).setText(s.getAuthor());
+			((TextView)row.findViewById(R.id.content)).setText(s.getContent());
+			new ImageLoadTask(s.getLogo(),(ImageView)row.findViewById(R.id.logo)).execute(null,null);
+			new ImageLoadTask(s.getPicture(),(ImageView)row.findViewById(R.id.photo)).execute(null,null);
+			
+			return row;
+		}		
+	}
 	
 	
 	
@@ -203,7 +235,7 @@ public class StreamFragment extends Fragment {
 		uiHelper.onDestroy();
 	}
 	
-	private class StableArrayAdapter extends ArrayAdapter<String> {
+/*	private class StableArrayAdapter extends ArrayAdapter<String> {
 
 	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
 
@@ -227,7 +259,7 @@ public class StreamFragment extends Fragment {
 	    }
 
 	  }
-
+*/
 	
 }
 
